@@ -35,7 +35,7 @@ else
 
     site = "http://#{host}"
     consumer = OAuth::Consumer.new(config.consumer_key, config.consumer_secret, :site => site)
-    request_token = consumer.get_request_token :oauth_callback => 'http://localhost/'
+    request_token = consumer.get_request_token :exclude_callback => true
 
     puts
 
