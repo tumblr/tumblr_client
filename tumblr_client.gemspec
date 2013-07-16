@@ -15,7 +15,8 @@ Gem::Specification.new do |gem|
   gem.email = ['codingjester@gmail.com', 'john@crepezzi.com']
   gem.executables = `git ls-files -- bin/*`.split("\n").map{|f| File.basename(f)}
   gem.files = `git ls-files`.split("\n")
-  gem.homepage = "http://github.com/codingjester/tumblr_client"
+  gem.homepage = "http://github.com/tumblr/tumblr_client"
+  gem.license = "Apache"
   gem.name = "tumblr_client"
   gem.require_paths = ["lib"]
   gem.required_rubygems_version = Gem::Requirement.new('>= 1.3.6')
