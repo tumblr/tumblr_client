@@ -14,16 +14,17 @@ module Tumblr
         :url => "http://#{api_host}/"
       }
 
-      Faraday.new("http://#{api_host}/", default_options.merge(options)) do |builder|
-        data = { :api_host => api_host }.merge(credentials)
+      client = options[:client] ||= Faraday.default_adapter
 
+      Faraday.new("http://#{api_host}/", default_options.merge(options)) do |conn|
+        data = { :api_host => api_host }.merge(credentials)
         unless credentials.empty?
-          builder.use Faraday::Request::OAuth, data
+          conn.request :oauth, data
         end
-        builder.use Faraday::Request::Multipart
-        builder.use Faraday::Request::UrlEncoded
-        builder.use FaradayMiddleware::ParseJson, :content_type => 'application/json'
-        builder.use Faraday::Adapter::NetHttp
+        conn.request :multipart
+        conn.request :url_encoded
+        conn.response :json, :content_type => /\bjson$/
+        conn.adapter client
       end
     end
 
