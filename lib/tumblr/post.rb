@@ -1,3 +1,5 @@
+require 'mime/types'
+
 module Tumblr
   module Post
 
@@ -17,7 +19,7 @@ module Tumblr
     end
 
     def photo(blog_name, options = {})
-      valid_opts = STANDARD_POST_OPTIONS + [:caption, :link, :data, :data_raw, :source, :photoset_layout]
+      valid_opts = STANDARD_POST_OPTIONS + [:caption, :link, :data, :source, :photoset_layout]
       validate_options(valid_opts, options)
       validate_no_collision options, [:data, :source]
       convert_source_array :source, options
@@ -60,7 +62,7 @@ module Tumblr
     end
 
     def audio(blog_name, options = {})
-      valid_opts = STANDARD_POST_OPTIONS + [:data, :data_raw, :caption, :external_url]
+      valid_opts = STANDARD_POST_OPTIONS + [:data, :caption, :external_url]
       validate_options(valid_opts, options)
       validate_no_collision options, [:data, :external_url]
 
@@ -70,7 +72,7 @@ module Tumblr
     end
 
     def video(blog_name, options = {})
-      valid_opts = STANDARD_POST_OPTIONS + [:data, :data_raw, :embed, :caption]
+      valid_opts = STANDARD_POST_OPTIONS + [:data, :embed, :caption]
       validate_options(valid_opts, options)
       validate_no_collision options, [:data, :embed]
 
@@ -98,18 +100,17 @@ module Tumblr
     # Look for the various ways that data can be passed, and normalize
     # the result in this hash
     def extract_data!(options)
-      validate_no_collision options, [:data, :data_raw]
       if options.has_key?(:data)
         data = options.delete :data
         data = [data] unless Array === data
         data.each.with_index do |filepath, idx|
-          options["data[#{idx}]"] = File.open(filepath, 'rb').read
-        end
-      elsif options.has_key?(:data_raw)
-        data_raw = options.delete :data_raw
-        data_raw = [data_raw] unless Array === data_raw
-        data_raw.each.with_index do |dr, idx|
-          options["data[#{idx}]"] = dr
+          mime = MIME::Types.type_for(filepath)
+          if (!mime.empty?)
+            mime_type = MIME::Types.type_for(filepath)[0].content_type
+          else
+            mime_type = "application/octet-stream"
+          end
+          options["data[#{idx}]"] = Faraday::UploadIO.new(filepath, mime_type)
         end
       end
     end
