@@ -1,6 +1,6 @@
 # Tumblr Ruby Gem
 
-[![Gem Version](https://badge.fury.io/rb/tumblr_client.png)](http://badge.fury.io/rb/tumblr_client) [![Build Status](https://secure.travis-ci.org/tumblr/tumblr_client.png)](http://travis-ci.org/tumblr/tumblr_client)
+[![Gem Version](https://badge.fury.io/rb/tumblr_client.png)](http://badge.fury.io/rb/tumblr_client) [![Build Status](https://secure.travis-ci.org/tumblr/tumblr_client.png)](https://travis-ci.org/tumblr/tumblr_client)
 
 This is the official Ruby wrapper for the Tumblr v2 API. It supports all
 endpoints currently available on the
