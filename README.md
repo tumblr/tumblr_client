@@ -1,6 +1,6 @@
 # Tumblr Ruby Gem
 
-[![Gem Version](https://badge.fury.io/rb/tumblr_client.png)](http://badge.fury.io/rb/tumblr_client) [![Build Status](https://secure.travis-ci.org/tumblr/tumblr_client.png)](http://travis-ci.org/tumblr/tumblr_client)
+[![Gem Version](https://badge.fury.io/rb/tumblr_client.png)](http://badge.fury.io/rb/tumblr_client) [![Build Status](https://secure.travis-ci.org/tumblr/tumblr_client.png)](https://travis-ci.org/tumblr/tumblr_client)
 
 This is the official Ruby wrapper for the Tumblr v2 API. It supports all
 endpoints currently available on the
@@ -81,6 +81,25 @@ here: http://www.tumblr.com/oauth/register) and then sent out to the site
 to verify your account.  Once you verify, you will be redirected to your
 redirect URL (localhost by default) and copy the `oauth_verifier` back into the
 console.  Then you're all set!
+
+```shell
+$ tumblr
+Register an application at: http://www.tumblr.com/oauth/apps
+OAuth Consumer key: <consumer key>
+OAuth Consumer secret: <consumer secret>
+
+http://www.tumblr.com/oauth/authorize?oauth_token=<token>
+Post-redirect, copy the oauth_verifier
+OAuth Verifier: <verifier>
+
+        .                                 .o8       oooo
+      .o8                                "888       `888
+    .o888oo oooo  oooo  ooo. .oo.  .oo.   888oooo.   888  oooo d8b
+      888   `888  `888  `888P"Y88bP"Y88b  d88' `88b  888  `888""8P
+      888    888   888   888   888   888  888   888  888   888
+      888 .  888   888   888   888   888  888   888  888   888    .o.
+      "888"  `V88V"V8P' o888o o888o o888o `Y8bod8P' o888o d888b   Y8P
+```
 
 ### Contributions and Pull Requests
 
