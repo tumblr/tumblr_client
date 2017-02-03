@@ -2,6 +2,7 @@
 require File.join(File.dirname(__FILE__), 'lib/tumblr/version')
 
 Gem::Specification.new do |gem|
+  gem.required_ruby_version = ">= 1.9.2"
   gem.add_dependency 'faraday', '~> 0.9.0'
   gem.add_dependency 'faraday_middleware', '~> 0.9'
   gem.add_dependency 'json', '~> 1.8'
