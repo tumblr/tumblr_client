@@ -58,21 +58,25 @@ describe Tumblr::Request do
 
   describe :get_redirect_url do
 
-    context 'when redirect is found' do
+    [301, 302].each do |status|
 
-      before do
-        @path = '/the/path'
-        @params = { :hello => 'world' }
-        @redirect_url = 'redirect-to-here'
-        expect(client).to receive(:get_response).once.with(@path, @params).
-        and_return(OpenStruct.new({
-          :status => 301,
-          :headers => { 'Location' => @redirect_url }
-        }))
-      end
+      context "when redirect is found with #{status} code" do
 
-      it 'should return the redirect url' do
-        expect(client.get_redirect_url(@path, @params)).to eq(@redirect_url)
+        before do
+          @path = '/the/path'
+          @params = { :hello => 'world' }
+          @redirect_url = 'redirect-to-here'
+          expect(client).to receive(:get_response).once.with(@path, @params).
+          and_return(OpenStruct.new({
+            :status => status,
+            :headers => { 'Location' => @redirect_url }
+          }))
+        end
+
+        it 'should return the redirect url' do
+          expect(client.get_redirect_url(@path, @params)).to eq(@redirect_url)
+        end
+
       end
 
     end

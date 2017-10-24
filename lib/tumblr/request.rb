@@ -14,7 +14,7 @@ module Tumblr
     # get a redirect url
     def get_redirect_url(path, params = {})
       response = get_response path, params
-      if response.status == 301
+      if [301, 302].include?(response.status)
         response.headers['Location']
       else
         response.body['meta']
