@@ -10,7 +10,15 @@ module Tumblr
       :api_scheme
     ]
 
-    attr_accessor *VALID_OPTIONS_KEYS
+    VALID_OPTIONS_KEYS.each do |key|
+      define_method "#{key}=" do |value|
+        Thread.current["tumblr_client_#{key}"] = value
+      end
+
+      define_method key do
+        Thread.current["tumblr_client_#{key}"]
+      end
+    end
 
     def configure
       yield self
