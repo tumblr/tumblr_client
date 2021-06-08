@@ -3,6 +3,8 @@ require 'spec_helper'
 describe Tumblr::Blog do
 
   let(:blog_name) { 'seejohnrun.tumblr.com' }
+  let(:post_id) { 45693025 }
+  let(:other_blog_name) { 'staff' }
   let(:consumer_key) { 'ckey' }
   let(:client) do
     Tumblr::Client.new :consumer_key => consumer_key
@@ -89,6 +91,46 @@ describe Tumblr::Blog do
 
   end
 
+  describe :blow_following do
+    context 'with invalid parameters' do
+      it 'should raise an error' do
+        expect(lambda {
+          client.blog_following blog_name, :not => 'an option'
+        }).to raise_error ArgumentError
+      end
+    end
+
+    context 'with valid parameters' do
+      before do
+        expect(client).to receive(:get).once.with("v2/blog/#{blog_name}/following", limit: 1).and_return('response')
+      end
+      it 'should construct the request properly' do
+        r = client.blog_following blog_name, limit: 1
+        expect(r).to eq 'response'
+      end
+    end
+  end # describe :blog_following
+
+  describe :followed_by do
+    context 'with invalid parameters' do
+      it 'should raise an error' do
+        expect(lambda {
+          client.followed_by blog_name, other_blog_name, :not => 'an option'
+        }).to raise_error ArgumentError
+      end
+    end
+
+    context 'with valid parameters' do
+      before do
+        expect(client).to receive(:get).once.with("v2/blog/#{blog_name}/followed_by", query: other_blog_name).and_return('response')
+      end
+      it 'should construct the request properly' do
+        r = client.followed_by blog_name, other_blog_name
+        expect(r).to eq 'response'
+      end
+    end
+  end # describe :followed_by
+
   describe :blog_likes do
 
     context 'with invalid parameters' do
@@ -155,6 +197,46 @@ describe Tumblr::Blog do
     end
 
   end
+
+  describe :get_post do
+    context 'with invalid parameters' do
+      it 'should raise an error' do
+        expect(lambda {
+          client.get_post blog_name, post_id, not: 'an option'
+        }).to raise_error ArgumentError
+      end
+    end
+
+    context 'with valid parameters' do
+      before do
+        expect(client).to receive(:get).once.with("v2/blog/#{blog_name}/posts/#{post_id}", {}).and_return('response')
+      end
+      it 'should construct the request properly' do
+        r = client.get_post blog_name, post_id
+        expect(r).to eq('response')
+      end
+    end
+  end # describe :get_post
+
+  describe :notes do
+    context 'with invalid parameters' do
+      it 'should raise an error' do
+        expect(lambda {
+          client.notes blog_name, post_id, not: 'an option'
+        }).to raise_error ArgumentError
+      end
+    end
+
+    context 'with valid parameters' do
+      before do
+        expect(client).to receive(:get).once.with("v2/blog/#{blog_name}/notes", id: post_id).and_return('response')
+      end
+      it 'should construct the request properly' do
+        r = client.notes blog_name, post_id
+        expect(r).to eq('response')
+      end
+    end
+  end # describe :notes
 
   # These are all just lists of posts with pagination
   [:queue, :draft, :submissions].each do |type|

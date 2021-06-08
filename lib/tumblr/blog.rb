@@ -57,7 +57,7 @@ module Tumblr
     end
 
     # Get post of given ID from blog
-    def get_post(blog_name, post_id, options = {})
+    def get_post(blog_name, post_id, **options)
       validate_options([:post_format], options)
       get(blog_path(blog_name, "posts/#{post_id}"), options)
     end
