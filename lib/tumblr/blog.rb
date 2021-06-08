@@ -19,11 +19,20 @@ module Tumblr
       get(blog_path(blog_name, 'followers'), options)
     end
 
-    # Gets the list of blogs the user is following, if possible
+    # Gets the list of blogs the user is following
     def blog_following(blog_name, options = {})
       validate_options([:limit, :offset], options)
       get(blog_path(blog_name, 'following'), options)
     end
+
+    # Determines whether own blog (followee_blog) is followed by follower_blog 
+    # (if authorized)
+    def followed_by(followee_blog, follower_blog=nil, **options)
+      validate_options([:query], options)
+      options[:query] ||= follower_blog
+      get(blog_path(followee_blog, 'followed_by'), options)
+    end
+    alias_method :blog_followed_by, :followed_by
 
     # Gets the list of likes for the blog
     def blog_likes(blog_name, options = {})
@@ -105,14 +114,14 @@ module Tumblr
     alias_method :blocked, :blocks
 
     # Block a blog (blockee_blog) from blocker_blog (if authorized)
-    def block(blocker_blog, blockee_blog=nil, options = {})
+    def block(blocker_blog, blockee_blog=nil, **options)
       validate_options([:blocked_tumblelog, :post_id], options)
       options[:blocked_tumblelog] ||= blockee_blog
       post(blog_path(blocker_blog, 'blocks'), options)
     end
 
     # Unlock a blog (blockee_blog) from blocker_blog (if authorized)
-    def unblock(blocker_blog, blockee_blog=nil, options = {})
+    def unblock(blocker_blog, blockee_blog=nil, **options)
       validate_options([:blocked_tumblelog, :anonymous_only], options)
       options[:blocked_tumblelog] ||= blockee_blog
       delete(blog_path(blocker_blog, 'blocks'), options)
