@@ -37,5 +37,22 @@ module Tumblr
       post('v2/user/unlike', :id => id, :reblog_key => reblog_key)
     end
 
+    def filtered_content
+      get('v2/user/filtered_content')
+    end
+    alias_method :get_filtered_content, :filtered_content
+
+    def add_filtered_content(filtered_strings=nil, options={})
+      validate_options([:filtered_content], options)
+      options[:filtered_content] ||= filtered_strings
+      post('v2/user/filtered_content', options)
+    end
+
+    def delete_filtered_content(filtered_strings, options={})
+      validate_options([:filtered_content], options)
+      options[:filtered_content] ||= filtered_strings
+      delete('v2/user/filtered_content', options)
+    end
+
   end
 end
