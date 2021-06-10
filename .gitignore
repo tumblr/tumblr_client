@@ -11,3 +11,6 @@ coverage
 Gemfile.lock
 
 .bundle
+
+*.env*
+_init_client.rb

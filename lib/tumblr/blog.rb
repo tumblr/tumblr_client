@@ -120,10 +120,11 @@ module Tumblr
       post(blog_path(blocker_blog, 'blocks'), options)
     end
 
-    # Unlock a blog (blockee_blog) from blocker_blog (if authorized)
+    # Unblock a blog (blockee_blog) from blocker_blog (if authorized)
     def unblock(blocker_blog, blockee_blog=nil, **options)
       validate_options([:blocked_tumblelog, :anonymous_only], options)
       options[:blocked_tumblelog] ||= blockee_blog
+      puts "#{{path: blog_path(blocker_blog, 'blocks'), options: options}}"
       delete(blog_path(blocker_blog, 'blocks'), options)
     end
 

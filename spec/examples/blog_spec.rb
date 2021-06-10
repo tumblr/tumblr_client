@@ -359,24 +359,24 @@ describe Tumblr::Blog do
     end
   end # describe :block
 
-  # describe :unblock do
-  #   context 'with invalid parameters' do
-  #     it 'should raise an error' do
-  #       expect(lambda {
-  #         client.unblock blog_name, other_blog_name, not: 'an option'
-  #       }).to raise_error ArgumentError
-  #     end
-  #   end
+  describe :unblock do
+    context 'with invalid parameters' do
+      it 'should raise an error' do
+        expect(lambda {
+          client.unblock blog_name, other_blog_name, not: 'an option'
+        }).to raise_error ArgumentError
+      end
+    end
 
-  #   context 'with valid parameters' do
-  #     before do
-  #       expect(client).to receive(:post).once.with("v2/blog/#{blog_name}/blocks", blocked_tumblelog: other_blog_name).and_return('response')
-  #     end
-  #     it 'should construct the request properly' do
-  #       r = client.unblock blog_name, other_blog_name
-  #       expect(r).to eq('response')
-  #     end
-  #   end
-  # end # describe :unblock
+    context 'with valid parameters' do
+      before do
+        expect(client).to receive(:delete).once.with("v2/blog/#{blog_name}/blocks", blocked_tumblelog: other_blog_name).and_return('response')
+      end
+      it 'should construct the request properly' do
+        r = client.unblock blog_name, other_blog_name
+        expect(r).to eq('response')
+      end
+    end
+  end # describe :unblock
 
 end
