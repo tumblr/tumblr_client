@@ -18,7 +18,7 @@ module Tumblr
       post(blog_path(blog_name, 'post/reblog'), options)
     end
 
-    def delete(blog_name, id)
+    def delete_post(blog_name, id)
       post(blog_path(blog_name, 'post/delete'), :id => id)
     end
 

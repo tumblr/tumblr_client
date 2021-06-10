@@ -270,6 +270,113 @@ describe Tumblr::Blog do
 
     end
 
-  end
+  end # [:queue, :draft, :submissions].each
+
+  describe :reorder_queue do
+    context 'with invalid parameters' do
+      it 'should raise an error' do
+        expect(lambda {
+          client.reorder_queue blog_name, not: 'an option'
+        }).to raise_error ArgumentError
+      end
+    end
+
+    context 'with valid parameters' do
+      before do
+        expect(client).to receive(:post).once.with("v2/blog/#{blog_name}/posts/queue/reorder", post_id: 1, insert_after: 2).and_return('response')
+      end
+      it 'should construct the request properly' do
+        r = client.reorder_queue blog_name, post_id: 1, insert_after: 2
+        expect(r).to eq('response')
+      end
+    end
+  end # describe :reorder_queue
+
+  describe :shuffle_queue do
+    it 'should construct the request properly' do
+      expect(client).to receive(:post).once.with("v2/blog/#{blog_name}/posts/queue/shuffle").and_return('response')
+      r = client.shuffle_queue blog_name
+      expect(r).to eq('response')
+    end
+  end # describe :shuffle_queue
+
+  describe :notifications do
+    context 'with invalid parameters' do
+      it 'should raise an error' do
+        expect(lambda {
+          client.notifications blog_name, not: 'an option'
+        }).to raise_error ArgumentError
+      end
+    end
+
+    context 'with valid parameters' do
+      it 'should construct the request properly' do
+        timestamp = Time.now.to_i
+        expect(client).to receive(:get).once.with("v2/blog/#{blog_name}/notifications", before: timestamp).and_return('response')
+        r = client.notifications blog_name, before: timestamp
+        expect(r).to eq('response')
+      end
+    end
+  end # describe :notifications
+
+  describe :blocks do
+    context 'with invalid parameters' do
+      it 'should raise an error' do
+        expect(lambda {
+          client.blocks blog_name, not: 'an option'
+        }).to raise_error ArgumentError
+      end
+    end
+
+    context 'with valid parameters' do
+      before do
+        expect(client).to receive(:get).once.with("v2/blog/#{blog_name}/blocks", limit: 1).and_return('response')
+      end
+      it 'should construct the request properly' do
+        r = client.blocks blog_name, limit: 1
+        expect(r).to eq('response')
+      end
+    end
+  end # describe :blocks
+
+  describe :block do
+    context 'with invalid parameters' do
+      it 'should raise an error' do
+        expect(lambda {
+          client.block blog_name, other_blog_name, not: 'an option'
+        }).to raise_error ArgumentError
+      end
+    end
+
+    context 'with valid parameters' do
+      before do
+        expect(client).to receive(:post).once.with("v2/blog/#{blog_name}/blocks", blocked_tumblelog: other_blog_name).and_return('response')
+      end
+      it 'should construct the request properly' do
+        r = client.block blog_name, other_blog_name
+        expect(r).to eq('response')
+      end
+    end
+  end # describe :block
+
+  # describe :unblock do
+  #   context 'with invalid parameters' do
+  #     it 'should raise an error' do
+  #       expect(lambda {
+  #         client.unblock blog_name, other_blog_name, not: 'an option'
+  #       }).to raise_error ArgumentError
+  #     end
+  #   end
+
+  #   context 'with valid parameters' do
+  #     before do
+  #       expect(client).to receive(:post).once.with("v2/blog/#{blog_name}/blocks", blocked_tumblelog: other_blog_name).and_return('response')
+  #     end
+  #     it 'should construct the request properly' do
+  #       r = client.unblock blog_name, other_blog_name
+  #       expect(r).to eq('response')
+  #     end
+  #   end
+  # end # describe :unblock
 
 end
