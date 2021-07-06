@@ -20,7 +20,7 @@ describe Tumblr::Post do
       end
 
       it 'should setup a delete properly' do
-        client.delete blog_name, post_id
+        client.delete_post blog_name, post_id
       end
 
     end

@@ -89,7 +89,7 @@ No request is too small and I encourage everyone to get involved. As you can see
 
 ### Requirements
 
-* Ruby 1.9.x or 2.x.x
+* Ruby 1.9.x to 3.x.x
 
 ---
 
